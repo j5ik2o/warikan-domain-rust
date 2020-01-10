@@ -1,0 +1,9 @@
+[package]
+name = "example"
+version = "0.1.0"
+authors = ["Junichi Kato <j5ik2o@gmail.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bigdecimal = "0.1.0"
