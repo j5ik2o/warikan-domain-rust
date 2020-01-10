@@ -15,6 +15,11 @@ fn main() {
     let m2 = Money::of(b2, jpy2);
 
     let m3 = m1.add(m2);
-
     println!("m = {:?}", m3);
+
+    if m3 >= Money::one(Currency::JPY) {
+        println!("yes")
+    } else {
+        println!("no")
+    }
 }

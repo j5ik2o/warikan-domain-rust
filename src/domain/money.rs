@@ -1,11 +1,12 @@
 use bigdecimal::{BigDecimal, One, Zero};
 use std::ops::{Add, Mul, Div, Rem};
 use domain::currency::Currency;
+use std::cmp::Ordering;
 
-#[derive(Debug)]
+#[derive(Debug,PartialEq)]
 pub struct Money {
-    amount: BigDecimal,
     currency: Currency,
+    amount: BigDecimal,
 }
 
 pub trait IMoney<T> {
@@ -13,7 +14,6 @@ pub trait IMoney<T> {
 }
 
 impl Money {
-
     pub fn one(currency: Currency) -> Self {
         Self::of(BigDecimal::one(), currency)
     }
@@ -26,16 +26,15 @@ impl Money {
         Self::of(self.amount.mul(BigDecimal::from(-1)), self.currency)
     }
 
-    pub fn add(self, other: Money) -> Result<Money, String> {
-        if self.currency == other.currency {
-            let result = self.amount.add(other.amount);
-            Ok(Self::of(result, other.currency))
-        } else {
-            Err("currency not equals.".to_string())
+    pub fn add(self, other: Money) -> Self {
+        if self.currency != other.currency {
+            panic!("Invalid the currency of other")
         }
+        let result = self.amount.add(other.amount);
+        Self::of(result, other.currency)
     }
 
-    pub fn sub(self, other: Money) -> Result<Money, String> {
+    pub fn sub(self, other: Money) -> Self {
         self.add(other.negated())
     }
 
@@ -50,7 +49,15 @@ impl Money {
     pub fn rem(self, n: BigDecimal) -> Self {
         Self::of(self.amount.rem(n), self.currency)
     }
+}
 
+impl PartialOrd for Money {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        if self.currency != other.currency {
+            panic!("Invalid the currency of other")
+        }
+        self.amount.partial_cmp(&other.amount)
+    }
 }
 
 impl IMoney<i64> for Money {
