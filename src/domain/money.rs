@@ -9,7 +9,7 @@ pub struct Money {
     amount: BigDecimal,
 }
 
-pub trait IMoney<T> {
+pub trait Factories<T> {
     fn of(_amount: T, _currency: Currency) -> Self;
 }
 
@@ -26,15 +26,17 @@ impl Money {
         Self::of(self.amount.mul(BigDecimal::from(-1)), self.currency)
     }
 
-    pub fn add(self, other: Money) -> Self {
-        if self.currency != other.currency {
-            panic!("Invalid the currency of other")
-        }
+    pub fn abs(self) -> Self {
+        Self::of(self.amount.abs(), self.currency)
+    }
+
+    pub fn add(self, other: Self) -> Self {
+        assert_eq!(self.currency, other.currency);
         let result = self.amount.add(other.amount);
         Self::of(result, other.currency)
     }
 
-    pub fn sub(self, other: Money) -> Self {
+    pub fn sub(self, other: Self) -> Self {
         self.add(other.negated())
     }
 
@@ -49,18 +51,24 @@ impl Money {
     pub fn rem(self, n: BigDecimal) -> Self {
         Self::of(self.amount.rem(n), self.currency)
     }
+
+    pub fn is_zero(&self) -> bool {
+        self.amount.is_zero()
+    }
+
+    pub fn is_non_zero(&self) -> bool {
+       !self.is_zero()
+    }
 }
 
 impl PartialOrd for Money {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        if self.currency != other.currency {
-            panic!("Invalid the currency of other")
-        }
+        assert_eq!(self.currency, other.currency);
         self.amount.partial_cmp(&other.amount)
     }
 }
 
-impl IMoney<i64> for Money {
+impl Factories<i64> for Money {
     fn of(_amount: i64, _currency: Currency) -> Self {
         Money {
             amount: BigDecimal::from(_amount),
@@ -69,7 +77,7 @@ impl IMoney<i64> for Money {
     }
 }
 
-impl IMoney<BigDecimal> for Money {
+impl Factories<BigDecimal> for Money {
     fn of(_amount: BigDecimal, _currency: Currency) -> Self {
         Money {
             amount: _amount,
