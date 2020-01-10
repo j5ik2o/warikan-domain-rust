@@ -1,4 +1,2 @@
 extern crate bigdecimal;
-
-pub mod money;
-pub mod currency;
+pub mod domain;

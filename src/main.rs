@@ -1,8 +1,8 @@
 extern crate example;
 extern crate bigdecimal;
 
-use example::currency::Currency;
-use example::money::*;
+use example::domain::currency::Currency;
+use example::domain::money::*;
 use bigdecimal::BigDecimal;
 
 fn main() {

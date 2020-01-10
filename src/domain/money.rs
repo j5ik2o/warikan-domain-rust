@@ -1,6 +1,6 @@
 use bigdecimal::{BigDecimal, One, Zero};
 use std::ops::{Add, Mul, Div, Rem};
-use currency::Currency;
+use domain::currency::Currency;
 
 #[derive(Debug)]
 pub struct Money {
