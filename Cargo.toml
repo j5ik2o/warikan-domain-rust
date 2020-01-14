@@ -7,3 +7,4 @@ authors = ["Junichi Kato <j5ik2o@gmail.com>"]
 
 [dependencies]
 bigdecimal = "0.1.0"
+im="14.1.0"

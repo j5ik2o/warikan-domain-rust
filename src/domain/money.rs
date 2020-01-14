@@ -14,6 +14,7 @@ pub trait Factories<T> {
 }
 
 impl Money {
+    
     pub fn one(currency: Currency) -> Self {
         Self::of(BigDecimal::one(), currency)
     }
