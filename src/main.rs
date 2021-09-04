@@ -29,7 +29,14 @@ fn main() {
       ),
     ],
   );
-  let party = Party::new(PartyName::new("test")).with_members(members);
-  let warikan = party.warikan(BillingAmount::new(Money::one(Currency::JPY)));
-  println!("{:?}", warikan);
+  let party = Party::new(PartyName::new("test"))
+    .with_members(members)
+    .with_party_payment_type_ratios(PartyPaymentTypeRatios::new(
+      PaymentRatio::new(2.0),
+      PaymentRatio::new(0.5),
+    ));
+  let warikan = party.warikan(BillingAmount::new(Money::of(100000, Currency::JPY)));
+  warikan.result().iter().for_each(|(member, payment)| {
+    println!("member = {}, payment = {}", member, payment);
+  });
 }

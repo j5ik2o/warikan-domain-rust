@@ -7,14 +7,12 @@ use domain::amount::{
 pub use self::currency::*;
 pub use self::member::*;
 pub use self::money::*;
-pub use self::party::*;
 pub use self::party_name::*;
 
 pub mod amount;
 mod currency;
 mod member;
 mod money;
-mod party;
 mod party_name;
 pub mod payment;
 
@@ -27,6 +25,11 @@ impl Warikan {
   pub fn new(result: HashMap<Member, PaymentAmount>) -> Self {
     Self { result }
   }
+
+  pub fn result(&self) -> HashMap<Member, PaymentAmount> {
+    self.result.clone()
+  }
+
   pub fn payment_amount_by(&self, member: Member) -> Option<&PaymentAmount> {
     self.result.get(&member)
   }
@@ -72,6 +75,14 @@ impl Party {
 
   pub fn with_members(mut self, members: Members) -> Self {
     self.members_opt = Some(members);
+    self
+  }
+
+  pub fn with_party_payment_type_ratios(
+    mut self,
+    party_payment_type_ratios: PartyPaymentTypeRatios,
+  ) -> Self {
+    self.party_payment_type_ratios = party_payment_type_ratios;
     self
   }
 

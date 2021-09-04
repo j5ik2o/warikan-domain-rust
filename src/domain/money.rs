@@ -4,11 +4,18 @@ use domain::currency::Currency;
 use std::cmp::Ordering;
 
 use domain::amount::PaymentRatio;
+use std::fmt::Formatter;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Money {
   currency: Currency,
   amount: BigDecimal,
+}
+
+impl std::fmt::Display for Money {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(f, "(currency = {}, amount = {:>.0})", self.currency, self.amount)
+  }
 }
 
 pub trait Factories<T> {

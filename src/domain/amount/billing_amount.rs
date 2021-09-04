@@ -11,7 +11,6 @@ impl BillingAmount {
   pub fn new(value: Money) -> Self {
     Self(value)
   }
-
 }
 
 impl Add for BillingAmount {

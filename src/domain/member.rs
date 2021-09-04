@@ -8,6 +8,12 @@ pub enum SecretaryType {
   Secretary,
 }
 
+impl std::fmt::Display for SecretaryType {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{:?}", self)
+  }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct MemberName(String);
 
@@ -33,6 +39,12 @@ pub struct Member {
   pub name: MemberName,
   secretary_type: SecretaryType,
   pub payment_type: PaymentType,
+}
+
+impl std::fmt::Display for Member {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(f, "(name = {}, secretary_type = {}, payment_type = {})", self.name, self.secretary_type, self.payment_type)
+  }
 }
 
 impl Member {
