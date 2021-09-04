@@ -1,10 +1,11 @@
 use bigdecimal::{BigDecimal, One, Zero};
-use std::ops::{Add, Mul, Div, Rem};
+use std::ops::{Add, Mul, Div, Rem, Sub};
 use domain::currency::Currency;
 use std::cmp::Ordering;
 use anyhow::*;
+use domain::amount::PaymentRatio;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Money {
   currency: Currency,
   amount: BigDecimal,
@@ -31,24 +32,6 @@ impl Money {
     Self::of(self.amount.abs(), self.currency)
   }
 
-  pub fn add(self, other: Self) -> Self {
-    assert_eq!(self.currency, other.currency);
-    let result = self.amount.add(other.amount);
-    Self::of(result, other.currency)
-  }
-
-  pub fn sub(self, other: Self) -> Self {
-    self.add(other.negated())
-  }
-
-  pub fn mul(self, n: BigDecimal) -> Self {
-    Self::of(self.amount.mul(n), self.currency)
-  }
-
-  pub fn div(self, n: BigDecimal) -> Self {
-    Self::of(self.amount.div(n), self.currency)
-  }
-
   pub fn rem(self, n: BigDecimal) -> Self {
     Self::of(self.amount.rem(n), self.currency)
   }
@@ -63,10 +46,54 @@ impl Money {
 }
 
 impl Add for Money {
-  type Output = anyhow::Result<Self>;
+  type Output = Self;
 
   fn add(self, rhs: Self) -> Self::Output {
-    todo!()
+    assert_eq!(self.currency, rhs.currency);
+    let result = self.amount.add(rhs.amount);
+    Self::of(result, rhs.currency)
+  }
+}
+
+impl Sub for Money {
+  type Output = Self;
+
+  fn sub(self, rhs: Self) -> Self::Output {
+    self + rhs.negated()
+  }
+}
+
+impl Mul<BigDecimal> for Money {
+  type Output = Self;
+
+  fn mul(self, rhs: BigDecimal) -> Self::Output {
+    Self::of(self.amount.mul(rhs), self.currency)
+  }
+}
+
+impl Mul<PaymentRatio> for Money {
+  type Output = Self;
+
+  fn mul(self, rhs: PaymentRatio) -> Self::Output {
+    let n = BigDecimal::from(rhs.0);
+    Self::of(self.amount.mul(n), self.currency)
+  }
+}
+
+impl Div<BigDecimal> for Money {
+  type Output = Self;
+
+  fn div(self, rhs: BigDecimal) -> Self::Output {
+    Self::of(self.amount.div(rhs), self.currency)
+  }
+}
+
+impl Div<PaymentRatio> for Money {
+  type Output = Self;
+
+  fn div(self, rhs: PaymentRatio) -> Self::Output {
+    let n = BigDecimal::from(rhs.0);
+    Self::of(self.amount.div(n), self.currency)
   }
 }
 

@@ -1,12 +1,14 @@
 use std::fmt::Formatter;
+use domain::payment::PaymentType;
+use std::collections::HashMap;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum SecretaryType {
   NonSecretary,
   Secretary,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct MemberName(String);
 
 impl std::fmt::Display for MemberName {
@@ -26,23 +28,25 @@ impl MemberName {
   }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Member {
-  name: MemberName,
+  pub name: MemberName,
   secretary_type: SecretaryType,
+  pub payment_type: PaymentType,
 }
 
 impl Member {
-  fn new(n: MemberName, st: SecretaryType) -> Self {
+  fn new(n: MemberName, st: SecretaryType, pt: PaymentType) -> Self {
     Member {
       name: n,
       secretary_type: st,
+      payment_type: pt,
     }
   }
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct Members(Vec<Member>);
+pub struct Members(pub(crate) Vec<Member>);
 
 impl Members {
   fn unit(head: Member) -> Self {
@@ -53,6 +57,14 @@ impl Members {
     let mut members = vec![head];
     members.extend_from_slice(tail);
     Members(members)
+  }
+
+  pub fn payment_types(&self) -> HashMap<Member, PaymentType> {
+    self
+      .0
+      .iter()
+      .map(|e| (e.clone(), e.clone().payment_type))
+      .collect::<HashMap<_, _>>()
   }
 
   fn size(&self) -> usize {
@@ -128,7 +140,7 @@ mod tests {
   #[test]
   fn member_exists() {
     let mn = MemberName::new("---");
-    let m = Member::new(mn, SecretaryType::NonSecretary);
+    let m = Member::new(mn, SecretaryType::NonSecretary, PaymentType::Medium);
     let ms = Members::unit(m.clone());
     assert_eq!(ms.size(), 1);
     let b = ms.exists(move |x| *x == m);
