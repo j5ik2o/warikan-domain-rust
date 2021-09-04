@@ -1,7 +1,7 @@
 mod domain;
 
 extern crate bigdecimal;
-
+extern crate anyhow;
 
 use bigdecimal::BigDecimal;
 use domain::*;

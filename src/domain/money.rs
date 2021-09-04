@@ -2,6 +2,7 @@ use bigdecimal::{BigDecimal, One, Zero};
 use std::ops::{Add, Mul, Div, Rem};
 use domain::currency::Currency;
 use std::cmp::Ordering;
+use anyhow::*;
 
 #[derive(Debug, PartialEq)]
 pub struct Money {
@@ -58,6 +59,14 @@ impl Money {
 
   pub fn is_non_zero(&self) -> bool {
     !self.is_zero()
+  }
+}
+
+impl Add for Money {
+  type Output = anyhow::Result<Self>;
+
+  fn add(self, rhs: Self) -> Self::Output {
+    todo!()
   }
 }
 
