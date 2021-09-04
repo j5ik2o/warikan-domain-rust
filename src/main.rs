@@ -5,7 +5,6 @@ extern crate anyhow;
 
 use bigdecimal::BigDecimal;
 use domain::*;
-use std::ops::Add;
 
 fn main() {
   let b1 = BigDecimal::from(1);

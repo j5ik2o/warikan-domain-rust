@@ -2,7 +2,7 @@ use bigdecimal::{BigDecimal, One, Zero};
 use std::ops::{Add, Mul, Div, Rem, Sub};
 use domain::currency::Currency;
 use std::cmp::Ordering;
-use anyhow::*;
+
 use domain::amount::PaymentRatio;
 
 #[derive(Debug, Clone, PartialEq)]

@@ -9,7 +9,6 @@ pub use self::member::*;
 pub use self::money::*;
 pub use self::party::*;
 pub use self::party_name::*;
-use std::ops::Div;
 
 mod amount;
 mod currency;
@@ -39,7 +38,7 @@ impl Warikan {
       .result
       .clone()
       .into_iter()
-      .find(|(k, v)| k.name == member_name)
+      .find(|(k, _v)| k.name == member_name)
   }
 
   pub fn total_amount(&self, currency: Currency) -> PaymentTotalAmount {
@@ -73,7 +72,10 @@ impl Party {
         let payment_ratio = self
           .party_payment_type_ratios
           .payment_type_ratio(payment_type);
-        (member.clone(), payment_base_amount.clone() * payment_ratio.clone())
+        (
+          member.clone(),
+          payment_base_amount.clone() * payment_ratio.clone(),
+        )
       })
       .collect::<HashMap<_, _>>();
     Warikan::new(result)

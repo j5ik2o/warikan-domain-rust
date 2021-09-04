@@ -1,7 +1,7 @@
 use std::ops::{Add, Div, Sub};
 
 use domain::Money;
-use domain::amount::{PaymentRatio, PaymentTotalAmount, WeightedSum, PaymentAmount};
+use domain::amount::{PaymentTotalAmount, WeightedSum, PaymentAmount};
 use bigdecimal::BigDecimal;
 
 #[derive(Debug, Clone)]
