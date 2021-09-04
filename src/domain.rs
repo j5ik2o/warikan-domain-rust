@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use domain::amount::{
-  PaymentAmount, PaymentTotalAmount, PartyPaymentTypeRatios, BillingAmount, WeightedSum,
+  BillingAmount, PartyPaymentTypeRatios, PaymentAmount, PaymentTotalAmount, WeightedSum,
 };
 
 pub use self::currency::*;
@@ -10,7 +10,7 @@ pub use self::money::*;
 pub use self::party::*;
 pub use self::party_name::*;
 
-mod amount;
+pub mod amount;
 mod currency;
 mod member;
 mod money;
@@ -18,6 +18,7 @@ mod party;
 mod party_name;
 pub mod payment;
 
+#[derive(Debug, Clone)]
 pub struct Warikan {
   result: HashMap<Member, PaymentAmount>,
 }
@@ -61,6 +62,19 @@ pub struct Party {
 }
 
 impl Party {
+  pub fn new(name: PartyName) -> Self {
+    Self {
+      name,
+      members_opt: None,
+      party_payment_type_ratios: PartyPaymentTypeRatios::default(),
+    }
+  }
+
+  pub fn with_members(mut self, members: Members) -> Self {
+    self.members_opt = Some(members);
+    self
+  }
+
   pub fn warikan(&self, billing_amount: BillingAmount) -> Warikan {
     let members = self.members_opt.as_ref().unwrap();
     let weighted_sum = self.weighted_sum();
@@ -85,7 +99,6 @@ impl Party {
     let members = self.members_opt.as_ref().unwrap();
     let payment_ratios = members
       .0
-      .clone()
       .iter()
       .map(|member| {
         self

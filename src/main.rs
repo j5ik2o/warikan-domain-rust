@@ -1,26 +1,35 @@
-mod domain;
-
-extern crate bigdecimal;
 extern crate anyhow;
+extern crate bigdecimal;
 
 use bigdecimal::BigDecimal;
+
 use domain::*;
+use domain::amount::*;
+use domain::payment::PaymentType;
+
+mod domain;
 
 fn main() {
-  let b1 = BigDecimal::from(1);
-  let jpy1 = Currency::JPY;
-  let m1 = Money::of(b1, jpy1);
-
-  let b2 = BigDecimal::from(1);
-  let jpy2 = Currency::JPY;
-  let m2 = Money::of(b2, jpy2);
-
-  let m3 = m1 + m2;
-  println!("m = {:?}", m3);
-
-  if m3 >= Money::one(Currency::JPY) {
-    println!("yes")
-  } else {
-    println!("no")
-  }
+  let members = Members::new(
+    Member::new(
+      MemberName::new("Junichi Kato"),
+      SecretaryType::Secretary,
+      PaymentType::Large,
+    ),
+    &[
+      Member::new(
+        MemberName::new("Test2"),
+        SecretaryType::Secretary,
+        PaymentType::Small,
+      ),
+      Member::new(
+        MemberName::new("Test3"),
+        SecretaryType::Secretary,
+        PaymentType::Medium,
+      ),
+    ],
+  );
+  let party = Party::new(PartyName::new("test")).with_members(members);
+  let warikan = party.warikan(BillingAmount::new(Money::one(Currency::JPY)));
+  println!("{:?}", warikan);
 }

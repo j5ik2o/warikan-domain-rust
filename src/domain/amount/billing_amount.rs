@@ -7,6 +7,13 @@ use bigdecimal::BigDecimal;
 #[derive(Debug, Clone)]
 pub struct BillingAmount(Money);
 
+impl BillingAmount {
+  pub fn new(value: Money) -> Self {
+    Self(value)
+  }
+
+}
+
 impl Add for BillingAmount {
   type Output = Self;
 

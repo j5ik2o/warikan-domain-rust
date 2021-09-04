@@ -18,11 +18,11 @@ impl std::fmt::Display for MemberName {
 }
 
 impl MemberName {
-  fn len(&self) -> usize {
+  pub fn len(&self) -> usize {
     self.0.len()
   }
 
-  fn new(s: &str) -> Self {
+  pub fn new(s: &str) -> Self {
     assert!((s.len() as i64) < 255);
     Self(s.to_string())
   }
@@ -36,7 +36,7 @@ pub struct Member {
 }
 
 impl Member {
-  fn new(n: MemberName, st: SecretaryType, pt: PaymentType) -> Self {
+  pub fn new(n: MemberName, st: SecretaryType, pt: PaymentType) -> Self {
     Member {
       name: n,
       secretary_type: st,
@@ -49,11 +49,11 @@ impl Member {
 pub struct Members(pub(crate) Vec<Member>);
 
 impl Members {
-  fn unit(head: Member) -> Self {
+  pub fn unit(head: Member) -> Self {
     Self::new(head, &[])
   }
 
-  fn new(head: Member, tail: &[Member]) -> Self {
+  pub fn new(head: Member, tail: &[Member]) -> Self {
     let mut members = vec![head];
     members.extend_from_slice(tail);
     Members(members)

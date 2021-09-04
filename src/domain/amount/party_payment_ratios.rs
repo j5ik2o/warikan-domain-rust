@@ -10,6 +10,7 @@ impl PartyPaymentTypeRatios {
   pub fn new(small: PaymentRatio, large: PaymentRatio) -> Self {
     let mut values = HashMap::new();
     values.insert(PaymentType::Large, large);
+    values.insert(PaymentType::Medium, PaymentRatio::new(1.00));
     values.insert(PaymentType::Small, small);
     Self { values }
   }

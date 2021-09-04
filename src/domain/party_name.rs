@@ -10,11 +10,11 @@ impl fmt::Display for PartyName {
 }
 
 impl PartyName {
-  fn len(&self) -> usize {
+  pub fn len(&self) -> usize {
     self.0.len()
   }
 
-  fn new(s: &str) -> Self {
+  pub fn new(s: &str) -> Self {
     assert!((s.len() as i64) < 255);
     Self(s.to_string())
   }
