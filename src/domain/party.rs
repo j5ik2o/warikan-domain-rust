@@ -7,6 +7,6 @@ pub struct Party {
 
 impl Party {
   fn new(n: PartyName) -> Self {
-    Party { name: n }
+    Self { name: n }
   }
 }

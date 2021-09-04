@@ -1,5 +1,5 @@
 [package]
-name = "example"
+name = "warikan-domain-rust"
 version = "0.1.0"
 authors = ["Junichi Kato <j5ik2o@gmail.com>"]
 

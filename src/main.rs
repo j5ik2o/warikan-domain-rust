@@ -1,9 +1,10 @@
-extern crate example;
+mod domain;
+
 extern crate bigdecimal;
 
-use example::domain::currency::Currency;
-use example::domain::money::*;
+
 use bigdecimal::BigDecimal;
+use domain::*;
 
 fn main() {
   let b1 = BigDecimal::from(1);

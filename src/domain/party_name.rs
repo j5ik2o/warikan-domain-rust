@@ -1,5 +1,13 @@
-#[derive(Debug)]
+use std::fmt;
+
+#[derive(Debug, Clone)]
 pub struct PartyName(String);
+
+impl fmt::Display for PartyName {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    write!(f, "{}", self.0)
+  }
+}
 
 impl PartyName {
   fn len(&self) -> usize {
@@ -8,7 +16,7 @@ impl PartyName {
 
   fn new(s: &str) -> Self {
     assert!((s.len() as i64) < 255);
-    PartyName(s.to_string())
+    Self(s.to_string())
   }
 }
 

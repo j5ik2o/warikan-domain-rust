@@ -1,4 +1,4 @@
-use im::Vector;
+use std::fmt::Formatter;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SecretaryType {
@@ -9,6 +9,12 @@ pub enum SecretaryType {
 #[derive(Debug, Clone, PartialEq)]
 pub struct MemberName(String);
 
+impl std::fmt::Display for MemberName {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}", self.0)
+  }
+}
+
 impl MemberName {
   fn len(&self) -> usize {
     self.0.len()
@@ -16,7 +22,7 @@ impl MemberName {
 
   fn new(s: &str) -> Self {
     assert!((s.len() as i64) < 255);
-    MemberName(s.to_string())
+    Self(s.to_string())
   }
 }
 
