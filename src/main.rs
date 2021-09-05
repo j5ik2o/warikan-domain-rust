@@ -1,8 +1,6 @@
 extern crate anyhow;
 extern crate bigdecimal;
 
-use bigdecimal::BigDecimal;
-
 use domain::*;
 use domain::amount::*;
 use domain::payment::PaymentType;
