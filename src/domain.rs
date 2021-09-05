@@ -1,11 +1,15 @@
 use std::collections::HashMap;
 
-use domain::amount::{BillingAmount, PartyPaymentTypeRatios, PaymentAmount, PaymentTotalAmount, WeightedSum, PaymentRatio};
+use domain::amount::{
+  BillingAmount, PartyPaymentTypeRatios, PaymentAmount, PaymentTotalAmount, WeightedSum,
+  PaymentRatio,
+};
 
 pub use self::currency::*;
 pub use self::member::*;
 pub use self::money::*;
 pub use self::party_name::*;
+use domain::payment::PaymentType;
 
 pub mod amount;
 mod currency;
@@ -85,44 +89,57 @@ impl Party {
   }
 
   pub fn warikan(&self, billing_amount: BillingAmount) -> Warikan {
-    let members = self.members_opt.as_ref().unwrap();
-    let weighted_sum = self.weighted_sum();
-    let payment_base_amount = billing_amount / weighted_sum;
+    let payment_base_amount = billing_amount / self.to_weighted_sum();
+    let member_payment_amounts =
+      self.to_member_payment_amounts(self.members_opt.as_ref().unwrap(), payment_base_amount);
+    Warikan::new(member_payment_amounts)
+  }
+
+  fn to_member_payment_amounts(
+    &self,
+    members: &Members,
+    payment_base_amount: PaymentAmount,
+  ) -> HashMap<Member, PaymentAmount> {
     let result = members
       .payment_types()
       .iter()
       .map(|(member, payment_type)| {
-        let payment_ratio = self
-          .party_payment_type_ratios
-          .payment_type_ratio(payment_type);
+        let payment_ratio = self.as_payment_ratio(payment_type);
         (
           member.clone(),
           payment_base_amount.clone() * payment_ratio.clone(),
         )
       })
       .collect::<HashMap<_, _>>();
-    Warikan::new(result)
+    result
   }
 
+  fn as_payment_ratio(&self, payment_type: &PaymentType) -> &PaymentRatio {
+    let payment_ratio = self
+      .party_payment_type_ratios
+      .payment_type_ratio(payment_type);
+    payment_ratio
+  }
 
-  fn weighted_sum(&self) -> WeightedSum {
-    let members = self.members_opt.as_ref().unwrap();
-    let payment_ratios = self.member_payment_ratios(members);
+  fn to_weighted_sum(&self) -> WeightedSum {
+    let payment_ratios = self.to_member_payment_ratios(self.members_opt.as_ref().unwrap());
     let (first, tail) = payment_ratios.split_first().unwrap();
     WeightedSum::from(first.clone(), tail)
   }
 
-  fn member_payment_ratios(&self, members: &Members) -> Vec<PaymentRatio> {
+  fn to_member_payment_ratios(&self, members: &Members) -> Vec<PaymentRatio> {
     let payment_ratios = members
-        .0
-        .iter()
-        .map(|member| {
-          self
-              .party_payment_type_ratios
-              .payment_type_ratio(&member.payment_type)
-              .clone()
-        })
-        .collect::<Vec<_>>();
+      .0
+      .iter()
+      .map(|member| self.to_payment_type_ratio(&member))
+      .collect::<Vec<_>>();
     payment_ratios
+  }
+
+  fn to_payment_type_ratio(&self, member: &&Member) -> PaymentRatio {
+    self
+      .party_payment_type_ratios
+      .payment_type_ratio(&member.payment_type)
+      .clone()
   }
 }

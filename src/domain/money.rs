@@ -14,7 +14,11 @@ pub struct Money {
 
 impl std::fmt::Display for Money {
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    write!(f, "(currency = {}, amount = {:>.0})", self.currency, self.amount)
+    write!(
+      f,
+      "(currency = {}, amount = {:>.0})",
+      self.currency, self.amount
+    )
   }
 }
 
