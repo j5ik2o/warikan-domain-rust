@@ -1,8 +1,6 @@
 use std::collections::HashMap;
 
-use domain::amount::{
-  BillingAmount, PartyPaymentTypeRatios, PaymentAmount, PaymentTotalAmount, WeightedSum,
-};
+use domain::amount::{BillingAmount, PartyPaymentTypeRatios, PaymentAmount, PaymentTotalAmount, WeightedSum, PaymentRatio};
 
 pub use self::currency::*;
 pub use self::member::*;
@@ -106,19 +104,25 @@ impl Party {
     Warikan::new(result)
   }
 
+
   fn weighted_sum(&self) -> WeightedSum {
     let members = self.members_opt.as_ref().unwrap();
-    let payment_ratios = members
-      .0
-      .iter()
-      .map(|member| {
-        self
-          .party_payment_type_ratios
-          .payment_type_ratio(&member.payment_type)
-          .clone()
-      })
-      .collect::<Vec<_>>();
+    let payment_ratios = self.member_payment_ratios(members);
     let (first, tail) = payment_ratios.split_first().unwrap();
     WeightedSum::from(first.clone(), tail)
+  }
+
+  fn member_payment_ratios(&self, members: &Members) -> Vec<PaymentRatio> {
+    let payment_ratios = members
+        .0
+        .iter()
+        .map(|member| {
+          self
+              .party_payment_type_ratios
+              .payment_type_ratio(&member.payment_type)
+              .clone()
+        })
+        .collect::<Vec<_>>();
+    payment_ratios
   }
 }
