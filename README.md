@@ -1,6 +1,6 @@
 # 飲み会の割り勘ドメイン(Rust版)
 
-[Scala版](https://github.com/j5ik2o/warikan-domain-scala)
+[Scala版はこちら](https://github.com/j5ik2o/warikan-domain-scala)
 
 解説記事: [ドメイン駆動設計をわかりやすく - ドメインのモデル設計を手を動かしながら学ぼう](https://employment.en-japan.com/engineerhub/entry/2020/05/26/103000)
 
@@ -78,23 +78,17 @@ JDKを切り替えることができる[jabba](https://github.com/shyiko/jabba)�
 ## ドメインオブジェクトを実装する(達成=RECOMMENDED, 時間=30分)
 
 - 本プロジェクトをひな型プロジェクトとして利用する。各チームでフォークしてください。
-    - [Moneyクラス](https://github.com/j5ik2o/warikan-domain-scala/blob/master/src/main/scala/warikan/domain/model/money/Money.scala)用意しています。お金の計算などに使ってください。
-    - ライブラリの依存関係(使うのは任意)
+    - クレートは自由に使ってください。
 - 概念モデルを実装に反映する
     - 上記で決めた概念名を持つ、具体的な型(クラス or 列挙型 or インターフェイス)を定義する
         - 区分は列挙型で定義しましょう
     - 型の責務を考える
     - プロパティだけではなく、メソッドも仮で定義する
     - プリミティブ型よりドメイン固有型を選択する    
-    - 細かい実装は後回し
-        - `TODO` or `FIXME` タグをつけて、`return null;` or `throw new NotImplementedException();`などを使うとよい
     - テストを書くか書かないかはチームごとに決めてください
-- ビルドとJIGの利用
-    - `$ sbt compile`でビルドできます。
-    - `$ sbt ';clean;jigReports'`で[JIG](https://github.com/dddjava/jig)のレポートを出力できます。
-        - 区分値依存関係(target/jig/category-usage.svg)
-        - クラス依存関係(target/jig/business-rule-relation.svg)
-        - パッケージ依存関係(target/jig/package-relation-depth?.svg)
+- ビルドとテスト
+    - `$ cargo build`でビルドできます。
+    - `$ cargo test`でテストを実行できます。
 
 ## ドメインオブジェクトを改善する(達成=OPTIONAL, 時間=45分)
 
