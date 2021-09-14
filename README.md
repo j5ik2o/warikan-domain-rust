@@ -1,6 +1,7 @@
 # 飲み会の割り勘ドメイン(Rust版)
 
-[Scala版はこちら](https://github.com/j5ik2o/warikan-domain-scala)
+- [Scala版はこちら](https://github.com/j5ik2o/warikan-domain-scala)
+- [Java版はこちら](https://github.com/j5ik2o/warikan-domain-java)
 
 解説記事: [ドメイン駆動設計をわかりやすく - ドメインのモデル設計を手を動かしながら学ぼう](https://employment.en-japan.com/engineerhub/entry/2020/05/26/103000)
 
