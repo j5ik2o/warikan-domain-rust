@@ -3,7 +3,8 @@
 - [Scala版はこちら](https://github.com/j5ik2o/warikan-domain-scala)
 - [Java版はこちら](https://github.com/j5ik2o/warikan-domain-java)
 
-解説記事: [ドメイン駆動設計をわかりやすく - ドメインのモデル設計を手を動かしながら学ぼう](https://employment.en-japan.com/engineerhub/entry/2020/05/26/103000)
+解説記事: [ドメイン駆動設計をわかりやすく - ドメインのモデル設計を手を動かしながら学ぼう](https://employment.en-japan.com/engineerhub/entry/2020/05/26/103000)  
+※この記事は、ログインしないとすべての内容が読めません。レイアウト無視でもよければ、 https://github.com/j5ik2o/warikan-domain-scala/blob/master/article.md ですべての内容が読めます。
 
 ## 成果物
 
